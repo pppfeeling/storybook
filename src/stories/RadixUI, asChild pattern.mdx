@@ -1,0 +1,70 @@
+import { Meta } from "@storybook/blocks";
+
+<Meta title="Radix UI, asChild pattern" />
+
+<div className="mb-4">
+  <div className='mb-8'>
+# as pattern
+
+## 구현
+
+```ts
+  export function Button({ as, ...props }) {
+    const Comp = as ?? "button"
+
+    return <Comp {...props} />
+  }
+
+  <Button as={Link} />
+```
+
+## 사용
+
+```html
+<button as="a" target="_blank" variant="outline" href="...">
+  <div>Hello</div>
+</button>
+```
+
+## 문제점
+
+> 하위(a tag)에 사용될 prop가 많아 질수록 구현이 복잡히짐
+
+</div>
+
+<div className='mb-8'>
+# asChild pattern
+## 사용
+```html
+<button asChild>
+  <a target="_blank" href="..." />
+</button>
+```
+
+- `asChild` 가 true일 때는 자식 컴포넌트(a)를 렌더링한다
+
+- a 태그에 Button 컴포넌트의 기능이 병합된다.
+
+</div>
+
+<div className='mb-8'>
+
+# Slot Component
+
+## 사용
+
+```js
+function Button({ asChild, ...props }) {
+  const Comp = asChild ? Slot : "button";
+  return <Comp {...props} />;
+}
+```
+
+- Slot 주어진 자식 요소의 속성을 병합하고 해당 요소를 렌더링한다.
+- 이 컴포넌트는 SlotClone 컴포넌트를 사용하여 내부적으로 렌더링한다.
+- SlotClone Slot의 자식 요소를 복제하고 해당 요소에 속성을 병합한 후 렌더링한다.
+- Slottable Slot 컴포넌트의 자식 요소로 사용되며, Slot이 렌더링할 대상이다.
+
+</div>
+
+</div>
